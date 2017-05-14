@@ -10,7 +10,7 @@ class GLObject
 {	
 	
 protected:
-	GLObject(GLenum glType);//Защищенный конструктор необходим для конструирования производных обхектов
+	GLObject(GLenum glType=-1);//Защищенный конструктор необходим для конструирования производных обхектов
 	GLuint id;
 	GLenum type;
 	void ProtectedBind();

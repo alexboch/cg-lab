@@ -72,6 +72,9 @@
     <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -113,6 +116,9 @@
     <ClCompile Include="Lab3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -132,6 +138,12 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="Shaders\shadows.vert">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\depth_shader.frag">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="Shaders\depth_shader.vert">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
