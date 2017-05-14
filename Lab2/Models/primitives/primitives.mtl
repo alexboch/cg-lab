@@ -1,0 +1,35 @@
+# Blender MTL File: 'primitives.blend'
+# Material Count: 3
+
+newmtl Material.001
+Ns 4
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.50000 0.640000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd D:\Textures\land_shallow_topo_2048.jpg
+
+newmtl Material.005
+Ns 1000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd D:\Textures\wooden_crate.jpg
+
+newmtl Material.007
+Ns 1000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 0.100000
+illum 1
+map_Kd D:\Textures\concrete\cncr.jpg
