@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include <GL/glew.h>
 #include <assimp\Importer.hpp>

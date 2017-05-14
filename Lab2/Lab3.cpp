@@ -1,7 +1,7 @@
 // Lab2.cpp : Defines the entry point for the console application.
 //
 
-
+#pragma once
 #include <GL\glew.h>
 #include "GLObject.h"
 #include "GLContext.h"
@@ -18,6 +18,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "Shadow.h"
 
 #pragma region Variables
 std::unique_ptr<Model> model;
@@ -48,6 +49,7 @@ const float bottom = 10.0f;
 const float nearPlane = 1.0f, farPlane = 7.5f;
 const int shadowWidth = 1024;
 const int shadowHeight = 1024;
+Shadow* shadow;
 #pragma endregion
 
 #pragma endregion
