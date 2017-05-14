@@ -16,11 +16,14 @@ protected:
 	GLuint depthMapFBO;//буфер кадра для карты глубины
 	GLuint depthMap;
 	glm::mat4 lightProjection;
+	glm::mat4 lightView;
 public:
 	GLuint GetDepthMap();
 	GLuint GetDepthMapFBO();
+	//glm::mat4 GetLightView();
 	/*Записывает глубину в буфер кадров*/
-	void RenderToFramebuffer(glm::vec3 lightPos, ShaderProgram* depthShaderProg, Model* model);
+	void RenderToFramebuffer(glm::vec3 lightPos, ShaderProgram* depthShaderProg,
+		Model* model,glm::mat4& lightSpaceMatrix);
 	Shadow();
 	Shadow(int shadowWidth, int shadowHeight, float left, float right,float top, float bottom,
 		float zNear, float zFar);

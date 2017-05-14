@@ -42,10 +42,11 @@ float dirLightXMovement = 0.0f;
 float dirLightYMovement = 0.0f;
 
 #pragma region Shadow
-const float left = -10.0f;
-const float right = 10.0f;
-const float top = 10.0f;
-const float bottom = 10.0f;
+/*Размеры ортографической проекции*/
+const float shadowLeft = -10.0f;
+const float shadowRight = 10.0f;
+const float shadowTop = 10.0f;
+const float shadowBottom = 10.0f;
 const float nearPlane = 1.0f, farPlane = 7.5f;
 const int shadowWidth = 1024;
 const int shadowHeight = 1024;
@@ -138,11 +139,12 @@ void idle()
 		SetLightUniform(shaderProgram, "coneDirection", i, gLights[i].coneDirection);
 	}
 #pragma endregion
+	glm::mat4 lightSpaceMatrix;
+	shadow->RenderToFramebuffer(gLights[0].position, depthShaderProgram,model.get(), lightSpaceMatrix);
 	
-
-
+	shaderProgram->Use();
 	shaderProgram->SetUniform(CAM_POS, camera.Position);
-
+	shaderProgram->SetUniform(LSPACE_MATRIX, lightSpaceMatrix);
 
 
 	model->Draw(shaderProgram);
@@ -264,14 +266,20 @@ int main(int argc, char** argv)
 	FragmentShader fragmentShader("Shaders\\shadows.frag");
 	shaderProgram->AttachShader(vertexShader);
 	shaderProgram->AttachShader(fragmentShader);
-	//shaderProgram->Use();
 	
+	//shaderProgram->Use();
+#pragma region Prepare shadows
 	depthShaderProgram = new ShaderProgram();
 	VertexShader depthVertexShader("Shaders\\depth_shader.vert");
-	VertexShader depthFragmentShader("Shaders\\depth_shader.frag");
+	FragmentShader depthFragmentShader("Shaders\\depth_shader.frag");
 	depthShaderProgram->AttachShader(depthVertexShader);
 	depthShaderProgram->AttachShader(depthFragmentShader);
-	
+	depthShaderProgram->Link();
+	shadow = new Shadow(shadowWidth, shadowHeight, shadowLeft, shadowRight,
+		shadowTop, shadowBottom, nearPlane, farPlane);
+#pragma endregion
+
+
 	InitLights();
 	
 	glEnable(GL_DEPTH_TEST);

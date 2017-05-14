@@ -31,7 +31,8 @@ void ShaderProgram::Link()
 		glDeleteProgram(id);
 
 		//Provide the infolog in whatever manner you deem best.
-		std::cerr << "Shader Program linking error:" << infoLog << std::endl;
+		/*std::cerr << "Shader Program linking error:" << infoLog << std::endl;*/
+		HandleErrorMessage("Shader Program linking error:", infoLog);
 		delete[] infoLog;
 		//Exit with failure.
 		return;
