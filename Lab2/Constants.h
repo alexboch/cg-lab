@@ -9,6 +9,7 @@ const static char* M_MODEL = "model";
 const static char* M_VIEW = "view";
 const static char* M_PROJ = "projection";
 static const char* NORM_MATRIX = "normalMatrix";
+const static char* LSPACE_MATRIX = "lightSpaceMatrix";
 #pragma endregion
 
 const static std::string TEX_DIR = "Textures//";
