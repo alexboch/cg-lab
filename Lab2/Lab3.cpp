@@ -43,6 +43,7 @@ float pointLightXMovement = 0.0f;
 float pointLightYMovement = 0.0f;
 float dirLightXMovement = 0.0f;
 float dirLightYMovement = 0.0f;
+float dirLightZMovement = 0.0f;
 
 #pragma region Shadow
 /*Размеры ортографической проекции*/
@@ -50,9 +51,9 @@ const float shadowLeft = -10.0f;
 const float shadowRight = 10.0f;
 const float shadowTop = 10.0f;
 const float shadowBottom = -10.0f;
-const float nearPlane = 0.1f, farPlane = 17.5f;
-const int shadowWidth = 1024;
-const int shadowHeight = 1024;
+const float nearPlane = 0.01f, farPlane = 27.5f;
+const int shadowWidth = 2048;
+const int shadowHeight = 2048;
 Shadow* shadow;
 #pragma endregion
 
@@ -129,7 +130,7 @@ void idle()
 	shaderProgram->SetUniform(M_VIEW, view);
 	// Draw the loaded model
 	glm::mat4 modelMatrix;
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, -0.5f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+	//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, -0.5f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 	//modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 	shaderProgram->SetUniform(M_MODEL, modelMatrix);
 	glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
@@ -146,8 +147,9 @@ void idle()
 	}
 	if (dirLightIsMoving)
 	{
-		dirLightXMovement += lightMoveSpeed;
-		dirLightYMovement += lightMoveSpeed;
+		dirLightXMovement += lightMoveSpeed*deltaTime;
+		dirLightZMovement += lightMoveSpeed*deltaTime;
+		dirLightYMovement += lightMoveSpeed*deltaTime;
 	}
 	
 
@@ -155,9 +157,9 @@ void idle()
 	{
 		if (gLights[i].lightType == DIR_LIGHT&&dirLightIsMoving)
 		{
-				gLights[i].position.x += cos(10 * dirLightXMovement) / 50.0f;
-				gLights[i].position.y += sin(8 * dirLightYMovement) / 50.0f;
-				gLights[i].position.z += sin(8 * dirLightYMovement) / 50.0f;
+				gLights[i].position.x += cos(2*dirLightXMovement)/20.0f;
+				gLights[i].position.y += sin(2*dirLightYMovement) / 20.0f;
+				gLights[i].position.z +=sin(dirLightZMovement) / 20.0f;
 		}
 		else if (gLights[i].lightType == POINT_LIGHT&&pointLightIsMoving)
 		{
@@ -282,7 +284,7 @@ void keyboard(unsigned char key, int x, int y)
 void InitLights()
 {
 	shaderProgram->Use();
-	directionalLight.position = glm::vec4(1, 1, 0, 0); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(0.5, 1, 1, 0);
 	directionalLight.intensities = glm::vec3(1, 1, 1); 
 	directionalLight.ambientCoefficient = 0.06f;
 	directionalLight.lightType = DIR_LIGHT;
