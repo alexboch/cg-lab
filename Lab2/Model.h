@@ -20,11 +20,13 @@ public:
 		this->loadModel(path);
 	}
 	void Draw(ShaderProgram* program);
+	void DrawVertices();
 private:
 	/*  Model Data  */
 	std::vector<Mesh> meshes;
 	std::vector<Texture> textures_loaded;
 	std::string directory;
+
 	/*  Functions   */
 	void loadModel(std::string path);
 	void processNode(aiNode* node, const aiScene* scene);

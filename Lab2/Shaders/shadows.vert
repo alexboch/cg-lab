@@ -6,7 +6,7 @@ out vec3 fragNormal;
 out vec2 fragTexCoord;
 out vec3 fragVert;
 out vec4 fragPosLightSpace;
-
+out vec3 fragPos;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -18,5 +18,7 @@ void main()
     fragNormal=normal;
 	fragVert=position;
 	fragTexCoord = texCoords;
-	fragPosLightSpace = lightSpaceMatrix * vec4(fragVert, 1.0);
+	
+	fragPos = vec3(model * vec4(position, 1.0));
+	fragPosLightSpace = lightSpaceMatrix * vec4(fragPos, 1.0);
 }

@@ -77,29 +77,31 @@ void Mesh::Draw(ShaderProgram* program)
 	
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
-	for (GLuint i = 0; i < this->textures.size(); i++)
-	{
-		glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
-										  // Retrieve texture number (the N in diffuse_textureN)
-		std::stringstream ss;
-		std::string number;
-		std::string name = this->textures[i].getType();
-		if (name == TextureTypes::duffuseTexName)
-			ss << diffuseNr++; // Transfer GLuint to stream
-		else if (name == TextureTypes::specularTexName)
-			ss << specularNr++; // Transfer GLuint to stream
-		number = ss.str();
+	//for (GLuint i = 0; i < this->textures.size(); i++)
+	//{
+	//	glActiveTexture(GL_TEXTURE0 + i); // Activate proper texture unit before binding
+	//									  // Retrieve texture number (the N in diffuse_textureN)
+	//	std::stringstream ss;
+	//	std::string number;
+	//	std::string name = this->textures[i].getType();
+	//	if (name == TextureTypes::duffuseTexName)
+	//		ss << diffuseNr++; // Transfer GLuint to stream
+	//	else if (name == TextureTypes::specularTexName)
+	//		ss << specularNr++; // Transfer GLuint to stream
+	//	number = ss.str();
 
-		//glUniform1f(glGetUniformLocation(program.getId(), ("material." + name + number).c_str()), i);
-		SetMaterialProps(program);
+	//	//glUniform1f(glGetUniformLocation(program.getId(), ("material." + name + number).c_str()), i);
+	//	SetMaterialProps(program);
 
-		//glUniform1f()
-		
-		//glUniform1f(glGetUniformLocation(program.getId(), (name + number).c_str()), i);
-		glBindTexture(GL_TEXTURE_2D, this->textures[i].GetID());
-	}
+	//	//glUniform1f()
+	//	
+	//	//glUniform1f(glGetUniformLocation(program.getId(), (name + number).c_str()), i);
+	//	glBindTexture(GL_TEXTURE_2D, this->textures[i].GetID());
+	//}
+	SetMaterialProps(program);
+	//program->SetUniform()
 	glActiveTexture(GL_TEXTURE0);
-
+	glBindTexture(GL_TEXTURE_2D, this->textures[0].GetID());
 	//включить прозрачность
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -108,3 +110,11 @@ void Mesh::Draw(ShaderProgram* program)
 	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
+
+void Mesh::DrawVertices()
+{
+	glBindVertexArray(this->VAO);
+	glDrawElements(GL_TRIANGLES, this->indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+}
+

@@ -191,6 +191,7 @@
     <None Include="Shaders\multiple_lights.frag" />
     <None Include="Shaders\shadows.frag" />
     <None Include="Shaders\shadows.vert" />
+    <None Include="Shaders\shadows_map.frag" />
     <None Include="Shaders\vertex_shader.vert" />
     <None Include="Shaders\zbuffer.frag" />
   </ItemGroup>

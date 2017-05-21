@@ -39,6 +39,7 @@ public:
 	//Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures,float alpha=1.0);
 	Mesh(std::vector<Vertex> vertices, std::vector<GLuint> indices, std::vector<Texture> textures, Material mat);
 	void Draw(ShaderProgram* program);
+	void DrawVertices();
 	void SetMaterialProps(ShaderProgram* program);
 	~Mesh();
 private:

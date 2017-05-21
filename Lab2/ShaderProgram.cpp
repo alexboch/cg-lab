@@ -110,7 +110,7 @@ void ShaderProgram::SetUniform(const GLchar * uniformName, glm::mat4 value)
 {
 	GLint uniformLoc = this->GetUniformLocation(uniformName);
 	if (uniformLoc != -1)
-		glUniformMatrix4fv(uniformLoc, 1,false, glm::value_ptr(value));
+		glUniformMatrix4fv(uniformLoc, 1,GL_FALSE, glm::value_ptr(value));
 	else HandleErrorMessage("Error setting mat4 uniform value, name:", uniformName);
 }
 

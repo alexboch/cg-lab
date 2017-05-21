@@ -15,6 +15,8 @@ const static char* LSPACE_MATRIX = "lightSpaceMatrix";
 const static std::string TEX_DIR = "Textures//";
 
 const static char* CAM_POS = "cameraPosition";
+const static char* SHADOW_MAP = "shadowMap";
+const static char* DIFFUSE_TEX = "materialTex";
 
 #pragma region Light
 static char* L_POS = "position";

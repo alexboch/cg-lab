@@ -26,7 +26,7 @@ std::unique_ptr<Mesh> triangleMesh;
 //std::unique_ptr<ShaderProgram>  shaderProgram;
 ShaderProgram* shaderProgram;
 ShaderProgram* depthShaderProgram;
-GLuint screenWidth = 800, screenHeight = 600;
+GLuint screenWidth = 1024, screenHeight = 768;
 Camera camera;
 const GLfloat cameraZoomSpeed = 0.1f;
 bool firstMotion = true;
@@ -46,7 +46,7 @@ float dirLightYMovement = 0.0f;
 const float shadowLeft = -10.0f;
 const float shadowRight = 10.0f;
 const float shadowTop = 10.0f;
-const float shadowBottom = 10.0f;
+const float shadowBottom = -10.0f;
 const float nearPlane = 1.0f, farPlane = 7.5f;
 const int shadowWidth = 1024;
 const int shadowHeight = 1024;
@@ -82,6 +82,34 @@ void display(void)
 {
 	
 }
+GLuint quadVAO, quadVBO;
+
+void renderQuad()
+{
+	if (quadVAO == 0)
+	{
+		float quadVertices[] = {
+			// positions        // texture Coords
+			-1.0f,  1.0f, 0.0f, 0.0f, 1.0f,
+			-1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+			1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+			1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+		};
+		// setup plane VAO
+		glGenVertexArrays(1, &quadVAO);
+		glGenBuffers(1, &quadVBO);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	}
+	glBindVertexArray(quadVAO);
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+	glBindVertexArray(0);
+}
 
 void idle()
 {
@@ -98,8 +126,8 @@ void idle()
 	shaderProgram->SetUniform(M_VIEW, view);
 	// Draw the loaded model
 	glm::mat4 modelMatrix;
-	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -0.5f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-	modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
+	//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+	//modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 	shaderProgram->SetUniform(M_MODEL, modelMatrix);
 	glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
 	shaderProgram->SetUniform(NORM_MATRIX, normalMatrix);
@@ -129,7 +157,7 @@ void idle()
 		{
 						
 				gLights[i].position.x += cos(10 * pointLightXMovement) / 80.0f;
-				gLights[i].position.y += sin(8 * pointLightYMovement) / 50.0f;
+				gLights[i].position.y += sin(10 * pointLightYMovement) / 50.0f;
 		}
 		SetLightUniform(shaderProgram, L_POS, i, gLights[i].position);
 		SetLightUniform(shaderProgram, L_INTENS, i, gLights[i].intensities);
@@ -140,15 +168,19 @@ void idle()
 	}
 #pragma endregion
 	glm::mat4 lightSpaceMatrix;
-	shadow->RenderToFramebuffer(gLights[0].position, depthShaderProgram,model.get(), lightSpaceMatrix);
+	shadow->RenderToFramebuffer(gLights[0].position, depthShaderProgram,model.get(),
+		lightSpaceMatrix,modelMatrix);
 	
 	shaderProgram->Use();
 	shaderProgram->SetUniform(CAM_POS, camera.Position);
 	shaderProgram->SetUniform(LSPACE_MATRIX, lightSpaceMatrix);
-
-
+	glViewport(0,0,screenWidth, screenHeight);
+	shaderProgram->SetUniform(SHADOW_MAP, 1);//указываем, что номер карты теней--первый
+	glActiveTexture(GL_TEXTURE1);
+	//shaderProgram->SetUniform("shadowMap",)
+	glBindTexture(GL_TEXTURE_2D, shadow->GetDepthMap());
 	model->Draw(shaderProgram);
-
+	//model->DrawVertices();
 	glutSwapBuffers();
 }
 
@@ -240,7 +272,7 @@ void keyboard(unsigned char key, int x, int y)
 void InitLights()
 {
 	shaderProgram->Use();
-	directionalLight.position = glm::vec4(1, 0.8, 0.6, 0); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(0, 1, 0, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(1, 1, 1); 
 	directionalLight.ambientCoefficient = 0.06f;
 	directionalLight.lightType = DIR_LIGHT;
@@ -276,7 +308,7 @@ int main(int argc, char** argv)
 	depthShaderProgram->AttachShader(depthFragmentShader);
 	depthShaderProgram->Link();
 	shadow = new Shadow(shadowWidth, shadowHeight, shadowLeft, shadowRight,
-		shadowTop, shadowBottom, nearPlane, farPlane);
+	shadowTop, shadowBottom, nearPlane, farPlane);
 #pragma endregion
 
 

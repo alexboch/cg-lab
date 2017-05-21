@@ -23,7 +23,7 @@ public:
 	//glm::mat4 GetLightView();
 	/*Записывает глубину в буфер кадров*/
 	void RenderToFramebuffer(glm::vec3 lightPos, ShaderProgram* depthShaderProg,
-		Model* model,glm::mat4& lightSpaceMatrix);
+		Model* model,glm::mat4& lightSpaceMatrix,glm::mat4& modelMatrix);
 	Shadow();
 	Shadow(int shadowWidth, int shadowHeight, float left, float right,float top, float bottom,
 		float zNear, float zFar);

@@ -14,6 +14,14 @@ void Model::Draw(ShaderProgram* program)
 	}
 }
 
+void Model::DrawVertices()
+{
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+	{
+		this->meshes[i].DrawVertices();
+	}
+}
+
 void Model::loadModel(std::string path)
 {
 	Assimp::Importer import;
@@ -125,7 +133,18 @@ Mesh Model::processMesh(aiMesh * mesh, const aiScene * scene)
 
 			std::vector<Texture> diffuseMaps = this->loadMaterialTextures(material,
 				aiTextureType_DIFFUSE, TextureTypes::duffuseTexName);
+			
+			if(diffuseMaps.size()==0)
+			{
+				//Загрузить текстуру по умолчанию
+				Texture defaultTexture("Textures\\default.bmp");
+				diffuseMaps.push_back(defaultTexture);
+			}
+			
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+
+			
+
 			std::vector<Texture> specularMaps = this->loadMaterialTextures(material,
 				aiTextureType_SPECULAR, TextureTypes::specularTexName);
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
