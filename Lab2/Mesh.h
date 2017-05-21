@@ -41,6 +41,7 @@ public:
 	void Draw(ShaderProgram* program);
 	void DrawVertices();
 	void SetMaterialProps(ShaderProgram* program);
+	Material GetMaterial();
 	~Mesh();
 private:
 	/*  Render data  */

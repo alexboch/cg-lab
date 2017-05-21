@@ -1,15 +1,34 @@
 #include "Model.h"
 
-void Model::Draw(ShaderProgram* program)
+void Model::Draw(ShaderProgram* program,glm::vec3 cameraPosition)
 {
+	std::map<float, Mesh> transparentMeshes;//объекты с прозрачностью
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
 		/*if (i == 1)
 			glDisable(GL_DEPTH_TEST);*/
 
 		//todo:Добавить сортировку прозрачных объектов по расстоянию от камеры
-
+		if(this->meshes[i].GetMaterial().alpha==1.0f)
 		this->meshes[i].Draw(program);
+		else
+		{
+			//GLfloat distance = glm::length(cameraPosition - meshes[i]);
+		}
+		//glEnable(GL_DEPTH_TEST);
+	}
+	for (GLuint i = 0; i < this->meshes.size(); i++)
+	{
+		/*if (i == 1)
+		glDisable(GL_DEPTH_TEST);*/
+
+		//todo:Добавить сортировку прозрачных объектов по расстоянию от камеры
+		if (this->meshes[i].GetMaterial().alpha < 1.0f)
+			this->meshes[i].Draw(program);
+		else
+		{
+			//GLfloat distance = glm::length(cameraPosition - meshes[i]);
+		}
 		//glEnable(GL_DEPTH_TEST);
 	}
 }
@@ -18,6 +37,7 @@ void Model::DrawVertices()
 {
 	for (GLuint i = 0; i < this->meshes.size(); i++)
 	{
+		if(this->meshes[i].GetMaterial().alpha==1.0f)
 		this->meshes[i].DrawVertices();
 	}
 }

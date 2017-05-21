@@ -19,7 +19,7 @@ public:
 	{
 		this->loadModel(path);
 	}
-	void Draw(ShaderProgram* program);
+	void Draw(ShaderProgram* program,glm::vec3 cameraPosition);
 	void DrawVertices();
 private:
 	/*  Model Data  */

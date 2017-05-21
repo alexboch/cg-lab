@@ -30,6 +30,11 @@ void Mesh::SetMaterialProps(ShaderProgram* program)
 	program->SetUniform(MAT_SHINE, _material.shininess);
 }
 
+Material Mesh::GetMaterial()
+{
+	return _material;
+}
+
 void Mesh::setupMesh()
 {
 	glGenVertexArrays(1, &this->VAO);

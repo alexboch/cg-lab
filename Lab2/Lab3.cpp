@@ -126,6 +126,7 @@ void idle()
 
 	glm::mat4 projection = glm::perspective(camera.Zoom, (float)screenWidth / (float)screenHeight, 0.1f, 100.0f);
 	glm::mat4 view = camera.GetViewMatrix();
+	
 	shaderProgram->SetUniform(M_PROJ, projection);
 	shaderProgram->SetUniform(M_VIEW, view);
 	// Draw the loaded model
@@ -191,7 +192,7 @@ void idle()
 	glActiveTexture(GL_TEXTURE1);
 	//shaderProgram->SetUniform("shadowMap",)
 	glBindTexture(GL_TEXTURE_2D, shadow->GetDepthMap());
-	model->Draw(shaderProgram);
+	model->Draw(shaderProgram,camera.Position);
 	//model->DrawVertices();
 	glutSwapBuffers();
 }
