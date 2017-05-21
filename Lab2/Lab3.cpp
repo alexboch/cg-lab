@@ -36,6 +36,9 @@ std::vector<Light> gLights;//источники света
 float lightMoveSpeed = 0.001f;
 bool pointLightIsMoving = false;
 bool dirLightIsMoving = false;
+
+
+/*Сколько свет уже прошел по координатам*/
 float pointLightXMovement = 0.0f;
 float pointLightYMovement = 0.0f;
 float dirLightXMovement = 0.0f;
@@ -47,7 +50,7 @@ const float shadowLeft = -10.0f;
 const float shadowRight = 10.0f;
 const float shadowTop = 10.0f;
 const float shadowBottom = -10.0f;
-const float nearPlane = 1.0f, farPlane = 7.5f;
+const float nearPlane = 0.1f, farPlane = 17.5f;
 const int shadowWidth = 1024;
 const int shadowHeight = 1024;
 Shadow* shadow;
@@ -126,7 +129,7 @@ void idle()
 	shaderProgram->SetUniform(M_VIEW, view);
 	// Draw the loaded model
 	glm::mat4 modelMatrix;
-	//modelMatrix = glm::translate(modelMatrix, glm::vec3(0.0f, -0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+	modelMatrix = glm::translate(modelMatrix, glm::vec3(0.2f, -0.5f, 0.0f)); // Translate it down a bit so it's at the center of the scene
 	//modelMatrix = glm::scale(modelMatrix, glm::vec3(0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
 	shaderProgram->SetUniform(M_MODEL, modelMatrix);
 	glm::mat3 normalMatrix = glm::transpose(glm::inverse(glm::mat3(modelMatrix)));
@@ -146,12 +149,15 @@ void idle()
 		dirLightXMovement += lightMoveSpeed;
 		dirLightYMovement += lightMoveSpeed;
 	}
+	
+
 	for (size_t i = 0; i < gLights.size(); ++i) 
 	{
 		if (gLights[i].lightType == DIR_LIGHT&&dirLightIsMoving)
 		{
-				gLights[i].position.x += cos(5 * dirLightXMovement) / 70.0f;
+				gLights[i].position.x += cos(10 * dirLightXMovement) / 50.0f;
 				gLights[i].position.y += sin(8 * dirLightYMovement) / 50.0f;
+				gLights[i].position.z += sin(8 * dirLightYMovement) / 50.0f;
 		}
 		else if (gLights[i].lightType == POINT_LIGHT&&pointLightIsMoving)
 		{
@@ -165,7 +171,11 @@ void idle()
 		SetLightUniform(shaderProgram, L_AMBIENTCOEFF, i, gLights[i].ambientCoefficient);
 		SetLightUniform(shaderProgram, "coneAngle", i, gLights[i].coneAngle);
 		SetLightUniform(shaderProgram, "coneDirection", i, gLights[i].coneDirection);
+
 	}
+	
+
+
 #pragma endregion
 	glm::mat4 lightSpaceMatrix;
 	shadow->RenderToFramebuffer(gLights[0].position, depthShaderProgram,model.get(),
@@ -272,7 +282,7 @@ void keyboard(unsigned char key, int x, int y)
 void InitLights()
 {
 	shaderProgram->Use();
-	directionalLight.position = glm::vec4(0, 1, 0, 0); //w == 0 indications a directional light
+	directionalLight.position = glm::vec4(1, 1, 0, 0); //w == 0 indications a directional light
 	directionalLight.intensities = glm::vec3(1, 1, 1); 
 	directionalLight.ambientCoefficient = 0.06f;
 	directionalLight.lightType = DIR_LIGHT;

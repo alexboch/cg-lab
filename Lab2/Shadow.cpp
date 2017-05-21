@@ -17,7 +17,7 @@ GLuint Shadow::GetDepthMapFBO()
 void Shadow::RenderToFramebuffer(glm::vec3 lightPos, ShaderProgram* depthShaderProg,
 	Model* model, glm::mat4& lightSpaceMatrix,glm::mat4& modelMatrix)
 {
-	lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0, 1.0, 0.0));
+	lightView = glm::lookAt(lightPos, glm::vec3(0.2f,0.0f,0.0f), glm::vec3(0.0, 1.0, 0.0));
 	
 	lightSpaceMatrix = lightProjection*lightView;
 	depthShaderProg->Use();
